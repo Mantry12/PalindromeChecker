@@ -1,6 +1,10 @@
 import java.util.Scanner;
-import java.util.Deque;
-import java.util.ArrayDeque;
+
+class ListNode {
+    char data;
+    ListNode next;
+    ListNode(char data) { this.data = data; }
+}
 
 public class PalindromeChecker {
     public static void main(String[] args) {
@@ -8,28 +12,55 @@ public class PalindromeChecker {
         System.out.print("Enter string: ");
         String original = sc.nextLine();
 
-        // UC7: Deque implementation
-        Deque<Character> deque = new ArrayDeque<>();
-
-        // Add all characters
+        // Build linked list (head insertion)
+        ListNode head = null;
         for (char c : original.toCharArray()) {
-            deque.addLast(c);
+            ListNode newNode = new ListNode(c);
+            newNode.next = head;
+            head = newNode;
         }
 
-        // Compare front vs rear
-        boolean isPalindrome = true;
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
-                isPalindrome = false;
-                break;
-            }
-        }
-
-        if (isPalindrome) {
+        if (isPalindrome(head)) {
             System.out.println("Palindrome!");
         } else {
             System.out.println("Not a palindrome.");
         }
         sc.close();
+    }
+
+    // UC8: Fast-slow pointer + reverse second half
+    static boolean isPalindrome(ListNode head) {
+        // Step 1: Find middle (fast-slow pointers)
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Step 2: Reverse second half
+        ListNode secondHalf = reverseList(slow);
+
+        // Step 3: Compare first half vs reversed second half
+        ListNode firstHalf = head;
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) {
+                return false;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+        return true;
+    }
+
+    // Reverse linked list (second half)
+    static ListNode reverseList(ListNode head) {
+        ListNode prev = null, current = head;
+        while (current != null) {
+            ListNode next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
     }
 }
