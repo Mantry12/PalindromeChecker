@@ -1,14 +1,17 @@
 
 public class PalindromeChecker {
-
     public static void main(String[] args) {
+        String original = "racecar";  // ← THIS ONLY!
 
-        System.out.println("===========================================");
-        System.out.println(" Welcome to the Palindrome Checker System ");
-        System.out.println("===========================================");
-        System.out.println("Version : 1.0");
-        System.out.println("System initialized successfully.");
-        System.out.println();
-        System.out.println("Ready to proceed to next use case...");
+        String reversed = "";
+        for (int i = original.length() - 1; i >= 0; i--) {
+            reversed += original.charAt(i);
+        }
+
+        if (original.equals(reversed)) {
+            System.out.println("Palindrome!");
+        } else {
+            System.out.println("Not a palindrome.");
+        }
     }
 }
